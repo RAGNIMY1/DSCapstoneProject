@@ -1,0 +1,93 @@
+Swiftkey Capstone Project
+========================================================
+type: titlepage
+autosize: true
+transition: rotate
+font-family: 'Verdana'
+
+<h3 style="color:blue">Coursera Data Science Specialisation</h2> 
+<h3 style="color:blue">John Hopkings University</h2> 
+
+Myriam Ragni - April,2020
+
+- The Shiny application code is available here: [http://github.com/RAGNIMY1/DSCapstoneProject ](http://github.com/RAGNIMY1/DSCapstoneProject)
+- The application is hosted here:  [http://myriamragni.shinyapps.io/NextWord/](http://myriamragni.shinyapps.io/NextWord/)
+
+
+INTRODUCTION
+========================================================
+class: reveal
+<style>
+/* slide titles */
+.reveal h3 { 
+  font-size: 38px;
+  color: blue;
+}
+.reveal p { 
+  font-size: 16px;
+  color: black;
+}
+.reveal ul { 
+  font-size: 16px;
+  color: black;
+}
+.small-code pre code { 
+  font-size: 12px;
+}
+</style>
+
+The objective of this final project was to develop a text prediction algorithm using Natural Language Processing along with a Shiny Application that takes as input a phrase and outputs a prediction of the next word. 
+<br>
+The following diagram depicts the different phases of the development of the Predictive Text Product.
+<br>
+<img src="./OverallProcess.png";style="max-width:100px;max-height:100px";>
+
+
+HIGHLIGHTS
+========================================================
+<ul>
+<li><b>Data Acquisition: </b>The predictive text model is based on the English Blogs,News & Twitter files
+</li>
+
+<li><b>Data Sampling</b>
+ <ul>
+    <li>For each of the txt file I've created a 'Training' sample (70% of the data), a 'Validate' sample (30% of the data) and a 'Test' one (10% of Train - for code testing purposes).
+    </li>
+   <li>The Training sample files are combined later to create the Corpus for the model.
+   </li>
+ </ul>
+
+<li><b>Corpus Cleanup & Tokenization</b>
+    <ul>
+    <li>Advanced text cleanup/transformations were applied to the data contained in the Corpus: e.g. replacement of contractions, removal of profanities/numbers/punctuation/special characters/URLs/tags...I decided not to remove stopwords as they may be useful for the prediction of a word in a sentence.
+    </li>
+    <li>Due to memory limitations I could only generate up to 4-Grams. The Quanteda package was the most efficient.
+    </li>
+    <li>For performance purposes I decided to ignore the n-Grams with a frequency equal to 1 (pruning).
+    </li>
+        </li>
+    <li>Possible improvements for next product version: implement stemming/lemmatization, assign a special token for abbreviations/numerical values...
+    </li>
+    </ul>
+</li>
+</ul>
+
+PREDICTION ALGORITHM
+========================================================
+After the N-Grams tokenization, uni/bi/tri and quadgram term frequency matrices were created; those are the fundament for the generation of frequency dictionaries which include the smoothed probabilities to the different N-Grams calculated  using the Kneser-Ney smoothing method.
+<br>
+The flow below shows the logic used in the Shiny APPS to predict the possible words following a sentence provided by the user. It is based on the Katz Back-Off technique.
+<img src="./PredictionAlgorithm.png";style="max-width:100px;max-height:100px";>
+
+
+SHINY APPLICATION
+========================================================
+<ul>
+<li><b>INPUT</b>: Enter a short sentence (minimum 1 word) in English and hit the 'Submit next word...' button
+</li>
+<li><b>OUTPUT:</b> A table listing the first 10 N-Grams found in the appropriate dictionary, sorted by the estimated probability. If the combination of the last 3/2 words of the sentence could not be found in the dictionaries, the table returns a random list of unigrams among the top 100. 
+</li>
+</ul>
+<img src="./ShinyAPPS.png";style="max-width:100px;max-height:100px";>
+<br>
+Detailed instructions and output description are available is the 'About' tab of the application.
